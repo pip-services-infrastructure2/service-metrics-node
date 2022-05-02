@@ -1,0 +1,9 @@
+/node_modules
+/npm-debug.log
+/.idea
+/data/metrics.test.json
+/data/metrics.json
+/obj/test
+/docker/id_rsa*
+/.vscode
+package-lock.json

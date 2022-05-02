@@ -1,0 +1,95 @@
+---
+# Console logger
+- descriptor: "pip-services:logger:console:default:1.0"
+  level: {{LOG_LEVEL}}{{#unless LOG_LEVEL}}info{{/unless}}
+
+# Performance counters that posts values to log
+- descriptor: "pip-services:counters:log:default:1.0"
+  level: {{LOG_LEVEL}}{{#unless LOG_LEVEL}}info{{/unless}}
+
+{{#if ELASTICSEARCH_LOGGER_ENABLED}}
+# Elastic search logger vesion 1.0
+- descriptor: "pip-services3:logger:elasticsearch:default:1.0"
+  level: {{LOG_LEVEL}}{{#unless LOG_LEVEL}}info{{/unless}}
+  connection:
+    uri: {{ELASTICSEARCH_SERVICE_URI}}{{#unless ELASTICSEARCH_SERVICE_URI}}http://localhost:9200{{/unless}}
+{{/if}}
+
+# AppInsights logger version 1.0
+#- descriptor: "pip-services:logger:app-insights:default:1.0"
+#  level: {{LOG_LEVEL}}{{#unless LOG_LEVEL}}info{{/unless}}
+#  credential:
+#    access_key: {{APP_INSIGHTS_INSTRUMENTATION_KEY}}
+
+  {{#if PROMETHEUS_ENABLED}}
+# Prometheus counters vesion 1.0
+- descriptor: "pip-services:counters:prometheus:default:1.0"
+  level: {{LOG_LEVEL}}{{#unless LOG_LEVEL}}info{{/unless}}
+  interval: {{PROMETHEUS_INTERVAL}}{{#unless PROMETHEUS_INTERVAL}}30000{{/unless}}
+  push_enabled: {{PROMETHEUS_PUSH_ENABLED}}{{#unless PROMETHEUS_PUSH_ENABLED}}false{{/unless}}
+
+# Prometheus metrics service version 1.0
+- descriptor: "pip-services:metrics-service:prometheus:default:1.0"
+  connection:
+    protocol: "http"
+    host: {{PROMETHEUS_SERVICE_HOST}}{{#unless PROMETHEUS_SERVICE_HOST}}0.0.0.0{{/unless}}
+    port: {{PROMETHEUS_SERVICE_PORT}}{{#unless PROMETHEUS_SERVICE_PORT}}8082{{/unless}}
+{{/if}}
+
+{{#if MEMORY_ENABLED}}
+# In-memory persistence. Use only for testing!
+- descriptor: "service-metrics:persistence:memory:default:1.0"
+{{/if}}
+
+{{#if FILE_ENABLED}}
+# File persistence. Use it for testing of for simple standalone deployments
+- descriptor: "service-metrics:persistence:file:default:1.0"
+  path: {{WEXXLE_METRICS_FILE_PATH}}{{#unless WEXXLE_METRICS_FILE_PATH}}"../data/metrics.json"{{/unless}}
+{{/if}}
+
+{{#if MONGO_ENABLED}}
+# MongoDB Persistence
+- descriptor: "service-metrics:persistence:mongodb:default:1.0"
+  collection: {{MONGO_COLLECTION}}{{#unless MONGO_COLLECTION}}metrics{{/unless}}
+  connection:
+    uri: {{MONGO_SERVICE_URI}}{{#unless MONGO_SERVICE_URI}}mongodb://mongo:27017/wexxle{{/unless}}
+{{/if}}
+
+{{#unless MEMORY_ENABLED}}{{#unless FILE_ENABLED}}{{#unless MONGO_ENABLED}}
+# Default in-memory persistence
+- descriptor: "service-metrics:persistence:memory:default:1.0"
+{{/unless}}{{/unless}}{{/unless}}
+
+# {{#unless MEMORY_ENABLED}}{{#unless FILE_ENABLED}}{{#unless MONGO_ENABLED}}
+# # Default in-mongoDb persistence
+# - descriptor: "service-metrics:persistence:mongodb:default:1.0"
+#   connection:
+#     host: "localhost"
+#     port: 27017
+#     database: "metrics"
+# {{/unless}}{{/unless}}{{/unless}}
+
+# Default controller
+- descriptor: "service-metrics:controller:default:default:1.0"
+
+# HTTP service version 1.0
+- descriptor: "service-metrics:service:http:default:1.0"
+  swagger:
+    enable: true
+    auto: true
+
+# HTTP endpoint version 1.0
+- descriptor: "pip-services:endpoint:http:default:1.0"
+  connection:
+    protocol: "http"
+    host: "0.0.0.0"
+    port: 8080
+
+ # Default Status
+- descriptor: "pip-services:status-service:http:default:1.0"
+
+# Default Heartbeat
+- descriptor: "pip-services:heartbeat-service:http:default:1.0"
+
+# Swagger service
+- descriptor: "pip-services:swagger-service:http:default:1.0"
