@@ -73,7 +73,7 @@
 - descriptor: "service-metrics:controller:default:default:1.0"
 
 # HTTP service version 1.0
-- descriptor: "service-metrics:service:http:default:1.0"
+- descriptor: "service-metrics:service:commandable-http:default:1.0"
   swagger:
     enable: true
     auto: true

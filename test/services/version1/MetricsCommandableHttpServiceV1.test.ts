@@ -9,7 +9,7 @@ import { PagingParams } from 'pip-services3-commons-nodex';
 
 import { MetricsMemoryPersistence } from '../../../src/persistence/MetricsMemoryPersistence';
 import { MetricsController } from '../../../src/logic/MetricsController';
-import { MetricsHttpServiceV1 } from '../../../src/services/version1/MetricsHttpServiceV1';
+import { MetricsCommandableHttpServiceV1 } from '../../../src/services/version1/MetricsCommandableHttpServiceV1';
 import { MetricDefinitionV1 } from '../../../src/data/version1/MetricDefinitionV1';
 import { TimeHorizonV1 } from '../../../src/data/version1/TimeHorizonV1';
 import { MetricUpdateV1 } from '../../../src/data/version1/MetricUpdateV1';
@@ -19,7 +19,7 @@ import { MetricValueSetV1 } from '../../../src/data/version1/MetricValueSetV1';
 suite('MetricsHttpServiceV1', () => {
     let persistence: MetricsMemoryPersistence;
     let controller: MetricsController;
-    let service: MetricsHttpServiceV1;
+    let service: MetricsCommandableHttpServiceV1;
     let rest: any;
 
     setup(async () => {
@@ -32,7 +32,7 @@ suite('MetricsHttpServiceV1', () => {
         controller = new MetricsController();
         controller.configure(new ConfigParams());
 
-        service = new MetricsHttpServiceV1();
+        service = new MetricsCommandableHttpServiceV1();
         service.configure(ConfigParams.fromTuples(
             'connection.protocol', 'http',
             'connection.port', 3000,
@@ -42,7 +42,7 @@ suite('MetricsHttpServiceV1', () => {
         let references = References.fromTuples(
             new Descriptor('service-metrics', 'persistence', 'memory', 'default', '1.0'), persistence,
             new Descriptor('service-metrics', 'controller', 'default', 'default', '1.0'), controller,
-            new Descriptor('service-metrics', 'service', 'http', 'default', '1.0'), service
+            new Descriptor('service-metrics', 'service', 'commandable-http', 'default', '1.0'), service
         );
 
         controller.setReferences(references);

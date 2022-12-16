@@ -6,6 +6,6 @@ export declare class MetricsServiceFactory extends Factory {
     FilePersistenceDescriptor: Descriptor;
     MongoDbPersistenceDescriptor: Descriptor;
     ControllerDescriptor: Descriptor;
-    HttpServiceDescriptor: Descriptor;
+    CmdHttpServiceDescriptor: Descriptor;
     constructor();
 }
