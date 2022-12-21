@@ -94,7 +94,7 @@ HTTP/REST service has the following configuration properties:
 
 Example:
 ```yaml
-- descriptor: "service-metrics:service:http:default:1.0"
+- descriptor: "service-metrics:service:commandable-http:default:1.0"
   connection:
     protocol: "http"
     host: "0.0.0.0"

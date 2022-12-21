@@ -123,7 +123,7 @@ Example of microservice configuration
 
 - descriptor: "service-metrics:controller:default:default:1.0"
 
-- descriptor: "service-metrics:service:http:default:1.0"
+- descriptor: "service-metrics:service:commandable-http:default:1.0"
   connection:
     protocol: "http"
     host: "0.0.0.0"
